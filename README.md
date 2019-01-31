@@ -1,4 +1,4 @@
-# Design with Comfort:  Enhancing the psychrometricchart with radiation and convection dimensions
+# Design with Comfort:  Enhancing the psychrometric chart with radiation and convection dimensions
 
 A paper submitted by Eric Teitelbaum, Clayton Miller and Forrest Meggers to the journal [Science and Technology for the Built Environment](https://www.ashrae.org/technical-resources/science-and-technology-for-the-built-environment)
 
