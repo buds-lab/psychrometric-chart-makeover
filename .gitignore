@@ -64,3 +64,4 @@ config.rst
 /.pydevproject
 
 package-lock.json
+geckodriver.log
