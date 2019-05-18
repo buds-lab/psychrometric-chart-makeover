@@ -22,13 +22,14 @@ def plot_psychro(temp_air = np.arange(10, 35, .2),
 				MR = 69.8,
 				w=0.06,
 				v=.1,
-				LR = 16.5,
 				Ar_Ad = 0.7,
 				E=0.98):
 
 
 	#Stephan Botlztmans constant
 	o = 0.00000005670367
+
+	LR = 16.5
 	#define psychrometric temp bounds
 	temperature = np.arange(5, 35, 0.1)
 

@@ -2,23 +2,19 @@
 <title>Hello from Flask</title>
 <h1>Wow</h1>
 
-
-
 <form method="POST">
   <fieldset>
-    <legend>Data:</legend>
+    <legend>Input Data:</legend>
     Metabolic Rate:<br>
-    <input type="text" name="mr" value="69.8"><br>
-    w:<br>
-    <input type="text" name="w" value="0.06"><br>
-    v:<br>
-    <input type="text" name="v" value="0.1"><br>
-    LR:<br>
-    <input type="text" name="LR" value="16.5"><br>     
-    Ar_Ad:<br>
-    <input type="text" name="Ar_Ad" value="0.7"><br>     
-    E:<br>
-    <input type="text" name="E" value="0.98"><br>
+    <input type="number" step="any" name="mr" value="{{form_values.MR}}" required="required"><br>
+    Skin Wettedness:<br>
+    <input type="number" step="any" name="w" value="{{form_values.w}}" required="required"><br>
+    Air Velocity:<br>
+    <input type="number" step="any" name="v" value="{{form_values.v}}" required="required"><br>  
+    Sitting or Standing? Sitting = 0.7, Standing = Eric Forgot:<br>
+    <input type="number" step="any" name="Ar_Ad" value="{{form_values.Ar_Ad}}" required="required"><br>     
+    Emmisitivity of Skin:<br>
+    <input type="number" step="any" name="E" value="{{form_values.E}}" required="required"><br>
 
     <input type="submit" value="Submit">
   </fieldset>
