@@ -14,8 +14,8 @@ import matplotlib.patches as mpatches
 import io
 import base64
 
-plt.rc('text', usetex=True)
-#plt.rc('font', family='sanserif')
+#plt.rc('text', usetex=True)
+plt.rc('font', family='sanserif')
 
 def plot_psychro(temp_air = np.arange(10, 35, .2), 
 				RH_psy = np.arange(0,100,.2)/100, 
@@ -155,7 +155,6 @@ def plot_psychro(temp_air = np.arange(10, 35, .2),
 			v_forced_v[i][k] = np.power(((MR-Q_rad_forced_v[i][k])/(10.1*(LR*w*(P_sat_skin_psy[i]-P_sat_air_psy[i][k])+(temp_skin[i]-temp_air[i])))),(1/0.61))
 			
 
-
 	#Define flask image
 	img = io.BytesIO()
 
@@ -247,7 +246,7 @@ def plot_psychro(temp_air = np.arange(10, 35, .2),
 
 	#plt.show()
 	plt.close()
-	return 'data:image/png;base64,{}'.format(graph_url)
+	return 'data:image/png;base64,{}'.format(graph_url), T_MRT_forced_psy
 
 
 
