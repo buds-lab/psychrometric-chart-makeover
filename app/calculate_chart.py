@@ -193,8 +193,10 @@ def plot_psychro(temp_air = np.arange(10, 35, .2),
 	CS = plt.contour(Y, psy_sat, T_MRT_forced_psy, 20, colors='k', alpha = 1)
 	plt.clabel(CS, inline=3, fmt='%1.1f', fontsize=textsize)
 	plt.contour(Y, psy_sat, wet_bulb_compare_forced, cmap = 'ocean', levels=levels_wb_forced, interpolation='sinc', fontsize = 20, dpi = 1200)
-	plt.contour(Y, psy_sat, equivalent_forced, cmap = 'ocean', levels=levels_wb_forced, interpolation='sinc', fontsize = 20, dpi = 600)
-	plt.contour(Y, psy_sat, dew_point_compare_forced, cmap = 'ocean', levels=levels_wb_forced, interpolation='sinc', fontsize = 20, dpi = 600)
+	
+	#PJ commented these out
+	#plt.contour(Y, psy_sat, equivalent_forced, cmap = 'ocean', levels=levels_wb_forced, interpolation='sinc', fontsize = 20, dpi = 600)
+	#plt.contour(Y, psy_sat, dew_point_compare_forced, cmap = 'ocean', levels=levels_wb_forced, interpolation='sinc', fontsize = 20, dpi = 600)
 	#plt.contourf(Y, psy_sat, Q_comp_rat, cmap = 'ocean', levels=levels_one, interpolation='sinc', fontsize = 20, dpi = 600)
 	#plt.contourf(Y, psy_sat, Q_comp_rat, cmap = 'ocean', levels=levels_half, interpolation='sinc', fontsize = 20, dpi = 600)
 	#plt.contourf(Y, psy_sat, Q_comp_rat, cmap = 'ocean', levels=levels_two, interpolation='sinc', fontsize = 20, dpi = 600)
@@ -204,16 +206,16 @@ def plot_psychro(temp_air = np.arange(10, 35, .2),
 	cbar = plt.colorbar(CS3, orientation='vertical', format="%.1f")
 
 
-	plt.text(35.5, 2.7, '10\%',size=textsize)
-	plt.text(35.5, 6.8, '20\%',size=textsize)
-	plt.text(35.5, 10.5, '30\%',size=textsize)
-	plt.text(35.5, 14.1, '40\%',size=textsize)
-	plt.text(35.5, 18, '50\%',size=textsize)
-	plt.text(35.5, 21.5, '60\%',size=textsize)
-	plt.text(35.5, 25.2, '70\%',size=textsize)
-	plt.text(34, 28.1, '80\%',size=textsize)
-	plt.text(31.8, 28.1, '90\%',size=textsize)
-	plt.text(27, 27, '100\%',size=textsize)
+	plt.text(35.5, 2.7, '10%',size=textsize)
+	plt.text(35.5, 6.8, '20%',size=textsize)
+	plt.text(35.5, 10.5, '30%',size=textsize)
+	plt.text(35.5, 14.1, '40%',size=textsize)
+	plt.text(35.5, 18, '50%',size=textsize)
+	plt.text(35.5, 21.5, '60%',size=textsize)
+	plt.text(35.5, 25.2, '70%',size=textsize)
+	plt.text(34, 28.1, '80%',size=textsize)
+	plt.text(31.8, 28.1, '90%',size=textsize)
+	plt.text(27, 27, '100%',size=textsize)
 
 
 
@@ -243,7 +245,7 @@ def plot_psychro(temp_air = np.arange(10, 35, .2),
 	plt.savefig(img, format='png')
 	img.seek(0)
 	graph_url = base64.b64encode(img.getvalue()).decode()
-
+	img=0 #I think I need to do this to prevent the memory from overflowing
 	#plt.show()
 	plt.close()
 	return 'data:image/png;base64,{}'.format(graph_url), T_MRT_forced_psy
@@ -252,4 +254,4 @@ def plot_psychro(temp_air = np.arange(10, 35, .2),
 
 
 if __name__ == '__main__':
-	plot_psychro2()
+	plot_psychro()
