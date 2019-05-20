@@ -41,19 +41,19 @@
 <div>
 <form method="POST" class="pa4 black-80">
 	
-	<label for="name" class="f6 b db mb2">Metabolic Rate <span class="normal black-60">(extra text)</span></label>
+	<label for="name" class="f6 b db mb2">Metabolic Rate <span class="normal black-60">(46.5 = asleep; 69.8 = office work; 116.3 = brisk walk)</span></label>
     <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" step="any" name="mr" value="{{form_values.MR}}" required="required">
 	
-	<label for="name" class="f6 b db mb2">Skin Wettedness <span class="normal black-60">(extra text)</span></label>
+	<label for="name" class="f6 b db mb2">Skin Wettedness <span class="normal black-60">(0.06 (dry) t0 0.8 (sweaty))</span></label>
     <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" step="any" name="w" value="{{form_values.w}}" required="required">
 	
-	<label for="name" class="f6 b db mb2">Air Velocity <span class="normal black-60">(extra text)</span></label>
+	<label for="name" class="f6 b db mb2">Air Velocity <span class="normal black-60">(eminimum value 0.2 m/s)</span></label>
     <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" step="any" name="v" value="{{form_values.v}}" required="required">  
 	
-	<label for="name" class="f6 b db mb2">Sitting or Standing? <span class="normal black-60">(Sitting or Standing? Sitting = 0.3, Standing = 0.73)</span></label>
+	<label for="name" class="f6 b db mb2">Sitting or Standing? <span class="normal black-60">(Sitting or Standing? Sitting = 0.7, Standing = 0.73)</span></label>
     <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" step="any" name="Ar_Ad" value="{{form_values.Ar_Ad}}" required="required"> 
     
-    <label for="name" class="f6 b db mb2">Emmisivity of Skin <span class="normal black-60">(extra text)</span></label>    
+    <label for="name" class="f6 b db mb2">Emmisivity of Skin <span class="normal black-60">(Standard = 0.98)</span></label>    
     <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" step="any" name="E" value="{{form_values.E}}" required="required">
 
     <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6" type="submit" value="Submit">
