@@ -55,103 +55,38 @@ def plot_psychro(temp_air = np.arange(10, 35, .2),
 	#skin temp calculation
 	temp_skin = temp_air*.3812+22.406
 
+	#DEFINITIONS
+
 	#vapor pressure of water on skin's surface
 	P_sat_skin_psy = np.power(2.718,(77.3450+0.0057*(temp_skin+273.15)-7235/(temp_skin+273.15)))/(np.power((temp_skin+273.15),8.2))/1000
 	P_sat_air_psy = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
+	Q_conv_free_psy = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
+	Q_evap_free_psy = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
+	T_MRT_psy = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
+	Q_conv_forced_psy = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
+	Q_evap_forced_psy = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
+	T_MRT_forced_psy = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
+	psy_sat = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
+	temp_MRT = temp_air 
+	Q_rad_forced_v = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))] 
+	v_forced_v = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
+
 	for i in range(len(temp_air)):
 		for k in range(len(RH_psy)):
 			P_sat_air_psy[i][k] = np.power(2.718,(77.3450+0.0057*(temp_air[i]+273.15)-7235/(temp_air[i]+273.15)))/(np.power((temp_air[i]+273.15),8.2))/1000*RH_psy[k]
-
-	Q_conv_free_psy = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	for i in range(len(temp_air)):
-		for k in range(len(RH_psy)):
 			h_c_free_psy = 0.78*np.power(np.absolute(temp_skin[i]-temp_air[i]),0.56)
-			Q_conv_free_psy[i][k] = h_c_free_psy*(temp_skin[i]-temp_air[i])
-			
-
-	Q_evap_free_psy = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	for i in range(len(temp_air)):
-		for k in range(len(RH_psy)):
-			h_c_free_psy = 0.78*np.power(np.absolute(temp_skin[i]-temp_air[i]),0.56)       
+			Q_conv_free_psy[i][k] = h_c_free_psy*(temp_skin[i]-temp_air[i])    
 			h_e_free_psy = h_c_free_psy*LR
 			Q_evap_free_psy[i][k] = h_e_free_psy*w*(P_sat_skin_psy[i]-P_sat_air_psy[i][k])
-			
-	#print Q_evap_free_psy
-			
-	T_MRT_psy = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	for i in range(len(temp_air)):
-		for k in range(len(RH_psy)):
-			T_MRT_psy[i][k] = np.power(np.power((temp_skin[i]+273.15),4)-((MR-Q_evap_free_psy[i][k]-Q_conv_free_psy[i][k])/E/o/0.7),0.25)-273.15
-			
-			
-	equivalent = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	for i in range(len(temp_air)):
-		for k in range(len(RH_psy)):
-			equivalent[i][k] = T_MRT_psy[i][k]-temp_air[i]
-
-
-
-	Q_conv_forced_psy = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	for i in range(len(temp_air)):
-		for k in range(len(RH_psy)):
+			T_MRT_psy[i][k] = np.power(np.power((temp_skin[i]+273.15),4)-((MR-Q_evap_free_psy[i][k]-Q_conv_free_psy[i][k])/E/o/Ar_Ad),0.25)-273.15
 			h_c_forced_psy = 10.1*np.power(v,0.61)
-			Q_conv_forced_psy[i][k] = h_c_forced_psy*(temp_skin[i]-temp_air[i])
-			
-	Q_evap_forced_psy = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	for i in range(len(temp_air)):
-		for k in range(len(RH_psy)):
-			h_c_forced_psy = 10.1*np.power(v,0.61)       
+			Q_conv_forced_psy[i][k] = h_c_forced_psy*(temp_skin[i]-temp_air[i])      
 			h_e_forced_psy = h_c_forced_psy*LR
-			Q_evap_forced_psy[i][k] = h_e_free_psy*w*(P_sat_skin_psy[i]-P_sat_air_psy[i][k])
-			
-	#print Q_evap_free_psy
-			
-	T_MRT_forced_psy = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	for i in range(len(temp_air)):
-		for k in range(len(RH_psy)):
-			T_MRT_forced_psy[i][k] = np.power(np.power((temp_skin[i]+273.15),4)-((MR-Q_evap_forced_psy[i][k]-Q_conv_forced_psy[i][k])/E/o/0.7),0.25)-273.15
-			
-			
-	equivalent_forced = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	for i in range(len(temp_air)):
-		for k in range(len(RH_psy)):
-			equivalent_forced[i][k] = T_MRT_forced_psy[i][k]-temp_air[i]
-
-
-	psy_sat = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	for i in range(len(temp_air)):
-		for k in range(len(RH_psy)):
+			Q_evap_forced_psy[i][k] = h_e_forced_psy*w*(P_sat_skin_psy[i]-P_sat_air_psy[i][k])
+			T_MRT_forced_psy[i][k] = np.power(np.power((temp_skin[i]+273.15),4)-((MR-Q_evap_forced_psy[i][k]-Q_conv_forced_psy[i][k])/E/o/Ar_Ad),0.25)-273.15
 			psy_sat[i][k] = f(temp_air[i])*RH_psy[k]
-			
-	wet_bulb_compare_forced = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	for i in range(len(temp_air)):
-		for k in range(len(RH_psy)):
-			wet_bulb_compare_forced[i][k]=(temp_air[i]*np.arctan(0.151977*np.power((RH_psy[k]*100+8.313659),0.5))+np.arctan(temp_air[i]+RH_psy[k]*100)-np.arctan(RH_psy[k]*100-1.676331)+0.00391838*np.power(RH_psy[k]*100,1.5)*np.arctan(0.023101*RH_psy[k]*100)-4.686035)-T_MRT_forced_psy[i][k]
-
-	dew_point_compare_forced = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	for i in range(len(temp_air)):
-		for k in range(len(RH_psy)):
-			dew_point_compare_forced[i][k]=243.04*(np.log(RH_psy[k])+((17.625*temp_air[i])/(243.04+temp_air[i])))/(17.625-np.log(RH_psy[k])-((17.625*temp_air[i])/(243.04+temp_air[i])))-T_MRT_forced_psy[i][k]
-			
-	Q_comp_rat_forced = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	for i in range(len(temp_air)):
-		for k in range(len(RH_psy)):
-			Q_comp_rat_forced[i][k] = (E*o*(np.power((temp_skin[i]+273.15),4)-np.power((T_MRT_forced_psy[i][k]+273.15),4)))/(Q_evap_forced_psy[i][k] + Q_conv_forced_psy[i][k])
-
-	#MRT = air temperature - this could be modified later
-	temp_MRT = temp_air   
-
-
-	Q_rad_forced_v = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	for i in range(len(temp_air)):
-		for k in range(len(RH_psy)):
 			h_r_forced_v = 4*E*o*Ar_Ad*np.power((273.15+(temp_skin[i]+temp_MRT[i])/2),3)
 			Q_rad_forced_v[i][k] = h_r_forced_v*E*(temp_skin[i]-temp_MRT[i])
-			
-
-	v_forced_v = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	for i in range(len(temp_air)):
-		for k in range(len(RH_psy)):
 			v_forced_v[i][k] = np.power(((MR-Q_rad_forced_v[i][k])/(10.1*(LR*w*(P_sat_skin_psy[i]-P_sat_air_psy[i][k])+(temp_skin[i]-temp_air[i])))),(1/0.61))
 			
 
@@ -192,7 +127,7 @@ def plot_psychro(temp_air = np.arange(10, 35, .2),
 	CS3=plt.contourf(Y, psy_sat, T_MRT_forced_psy, cmap = 'jet', levels=levels_psy_forced,interpolation='sinc', fontsize = 20, dpi = 1200, alpha = 1)
 	CS = plt.contour(Y, psy_sat, T_MRT_forced_psy, 20, colors='k', alpha = 1)
 	plt.clabel(CS, inline=3, fmt='%1.1f', fontsize=textsize)
-	plt.contour(Y, psy_sat, wet_bulb_compare_forced, cmap = 'ocean', levels=levels_wb_forced, interpolation='sinc', fontsize = 20, dpi = 1200)
+	#plt.contour(Y, psy_sat, wet_bulb_compare_forced, cmap = 'ocean', levels=levels_wb_forced, interpolation='sinc', fontsize = 20, dpi = 1200)
 	
 	#PJ commented these out
 	#plt.contour(Y, psy_sat, equivalent_forced, cmap = 'ocean', levels=levels_wb_forced, interpolation='sinc', fontsize = 20, dpi = 600)
