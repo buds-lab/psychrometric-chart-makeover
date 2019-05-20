@@ -16,8 +16,8 @@ class TestBuildingSim(unittest.TestCase):
 		graph1_url, T_MRT_forced_psy = plot_psychro();
 
 		#Just testing two numbers from the T_MRT_forced_psy array and comparing them to their "true" values
-		self.assertEqual(round(T_MRT_forced_psy[1][3], 5), 19.48833)
-		self.assertEqual(round(T_MRT_forced_psy[5][9], 5), 19.50914)
+		self.assertEqual(round(T_MRT_forced_psy[1][3], 5), 20.98616)
+		self.assertEqual(round(T_MRT_forced_psy[5][9], 5), 21.02663)
 
 
 
