@@ -17,27 +17,56 @@ import base64
 #plt.rc('text', usetex=True)
 plt.rc('font', family='sanserif')
 
-def plot_psychro(temp_air_init = np.arange(10, 35, .5), 
+def plot_psychro(
+				#air temperature range over which calculations are performed [oC]
+				temp_air_init = np.arange(10, 35, .5), 
+
+				#%RH range over which calculations are performed [%RH/100]
 				RH_psy_init = np.arange(0,100,1)/100, 
+				
+				#metabolic rate for a person in [W/m2]. default value is 69.8 W/m2, equivalent to 1.2 met (the other unit for metabolic rate)
 				MR = 69.8,
+				
+				#skin wettedness parameter, [unitless]
+				#0.06 for dry skin, accounts for diffusion through skin
+				#0.8 is the practical upper bound for very sweaty skin
 				w=0.06,
+				
+				#air speed in [m/s]
 				v=.1,
+
+				#the air temperature minus the mean radiant temperature (MRT) [K]
+				#this is specified to calculate a wind speed for thermal comfort
+				#values > 0 are for an air temperature greater than the MRT 
+				#values < 0 are for an air temperature lower than the MRT
 				dep = 0,
+				
+				#emissivity of human skin [unitless]
+				#values in the literature vary between 0.95 to 0.98
 				E=0.98):
 
 
 	#Stephan Botlztmans constant
 	o = 0.00000005670367
 
+	#empirical ratio for a seated person
 	Ar_Ad = 0.7
 
+	#empirical ratio for calculating the evaporative "heat transfer" coefficient
 	LR = 16.5
-	#define psychrometric temp bounds
+
+	#define psychrometric temp bounds for drawing %RH lines
 	temperature = np.arange(5, 35, 0.1)
 
-	#redefine temp anr RH arrays
+	#redefine temp and %RH arrays
 	temp_air = np.tile(np.array(temp_air_init),(len(RH_psy_init),1)).transpose()
 	RH_psy = np.tile(np.array(RH_psy_init),(len(temp_air_init),1))
+
+	#2D relative humidity array dimension constant 
+	dim1 = len(RH_psy)
+
+	#2D air temperature array dimension constant 
+	dim2 = len(temp_air)
 
 	#clausius-clapyron constants
 	a=17.08
@@ -54,65 +83,86 @@ def plot_psychro(temp_air_init = np.arange(10, 35, .5),
 	TR = 0.6*1000*0.62198*np.exp(77.345+0.0057*(27+273.15)-7235/(27+273.15))/(101325*np.power((27+273.15),8.2)-np.exp(77.345+0.0057*(27+273.15)-7235/(27+273.15)))
 	comfort = np.arange(21, 27, 0.1)
 
-	def f(t):
-		return 1000*0.62198*np.exp(77.345+0.0057*(t+273.15)-7235/(t+273.15))/(101325*np.power((t+273.15),8.2)-np.exp(77.345+0.0057*(t+273.15)-7235/(t+273.15)))
-	
+
+
+	#ARRAY DECLARATIONS AND CALCULATIONS
 
 	#skin temp calculation
 	temp_skin = temp_air*.3812+22.406
 
-	#DEFINITIONS
-
 	#vapor pressure of water on skin's surface
 	P_sat_skin_psy = np.power(2.718,(77.3450+0.0057*(temp_skin+273.15)-7235/(temp_skin+273.15)))/(np.power((temp_skin+273.15),8.2))/1000
-	dim1 = len(RH_psy)
-	dim2 = len(temp_air)
-	P_sat_air_psy = np.zeros((dim2, dim1))
-	Q_conv_free_psy = np.zeros((dim2, dim1))
-	Q_evap_free_psy = np.zeros((dim2, dim1))
-	T_MRT_psy = np.zeros((dim2, dim1))
-	Q_conv_forced_psy = np.zeros((dim2, dim1))
-	Q_evap_forced_psy = np.zeros((dim2, dim1))
-	T_MRT_forced_psy = np.zeros((dim2, dim1))
+	
+	#mapping %RH matrix to specific humidity for plotting
 	psy_sat = np.zeros((dim2, dim1))
-	temp_MRT = temp_air - dep
-	Q_rad_forced_v = np.zeros((dim2, dim1)) 
-	v_forced_v = np.zeros((dim2, dim1))
-
-
-	P_sat_air_psy = np.power(2.718,(77.3450+0.0057*(temp_air+273.15)-7235/(temp_air+273.15)))/(np.power((temp_air+273.15),8.2))/1000*RH_psy
-	h_c_free_psy = 0.78*np.power(np.absolute(temp_skin-temp_air),0.56)
-	Q_conv_free_psy = h_c_free_psy*(temp_skin-temp_air)    
-	h_e_free_psy = h_c_free_psy*LR
-	Q_evap_free_psy = h_e_free_psy*w*(P_sat_skin_psy-P_sat_air_psy)
-	T_MRT_psy = np.power(np.power((temp_skin+273.15),4)-((MR-Q_evap_free_psy-Q_conv_free_psy)/E/o/Ar_Ad),0.25)-273.15
-	h_c_forced_psy = 10.1*np.power(v,0.61)
-	Q_conv_forced_psy = h_c_forced_psy*(temp_skin-temp_air)      
-	h_e_forced_psy = h_c_forced_psy*LR
-	Q_evap_forced_psy = h_e_forced_psy*w*(P_sat_skin_psy-P_sat_air_psy)
-	T_MRT_forced_psy = np.power(np.power((temp_skin+273.15),4)-((MR-Q_evap_forced_psy-Q_conv_forced_psy)/E/o/Ar_Ad),0.25)-273.15
 	psy_sat = 1000*0.62198*np.exp(77.345+0.0057*(temp_air+273.15)-7235/(temp_air+273.15))/(101325*np.power((temp_air+273.15),8.2)-np.exp(77.345+0.0057*(temp_air+273.15)-7235/(temp_air+273.15)))*RH_psy
+
+	#vapor pressure of water in air
+	P_sat_air_psy = np.zeros((dim2, dim1))
+	P_sat_air_psy = np.power(2.718,(77.3450+0.0057*(temp_air+273.15)-7235/(temp_air+273.15)))/(np.power((temp_air+273.15),8.2))/1000*RH_psy
+	
+	#free convection heat transfer coefficient for seated person
+	h_c_free_psy = 0.78*np.power(np.absolute(temp_skin-temp_air),0.56)
+
+	#free convection around the human body
+	Q_conv_free_psy = np.zeros((dim2, dim1))
+	Q_conv_free_psy = h_c_free_psy*(temp_skin-temp_air)
+	
+	#free convection evaporative heat transfer coefficient
+	h_e_free_psy = h_c_free_psy*LR
+	
+	#associated evaporative "heat transfer" about the human body (free convection)
+	Q_evap_free_psy = np.zeros((dim2, dim1))
+	Q_evap_free_psy = h_e_free_psy*w*(P_sat_skin_psy-P_sat_air_psy)
+	
+	#solved mean radiant temperature required for thermal comfort taking free convection into account
+	T_MRT_psy = np.zeros((dim2, dim1))
+	T_MRT_psy = np.power(np.power((temp_skin+273.15),4)-((MR-Q_evap_free_psy-Q_conv_free_psy)/E/o/Ar_Ad),0.25)-273.15
+	
+	#forced convection heat transfer coefficient calculation
+	h_c_forced_psy = 10.1*np.power(v,0.61)
+	
+	#forced convection around the human body
+	Q_conv_forced_psy = np.zeros((dim2, dim1))
+	Q_conv_forced_psy = h_c_forced_psy*(temp_skin-temp_air)    
+	
+	#forced convection evaporative heat transfer coefficient
+	h_e_forced_psy = h_c_forced_psy*LR
+
+	#associated evaporative "heat transfer" about the human body (free convection)
+	Q_evap_forced_psy = np.zeros((dim2, dim1))
+	Q_evap_forced_psy = h_e_forced_psy*w*(P_sat_skin_psy-P_sat_air_psy)
+
+	#solved mean radiant temperature required for thermal comfort taking forced convection into account
+	T_MRT_forced_psy = np.zeros((dim2, dim1))
+	T_MRT_forced_psy = np.power(np.power((temp_skin+273.15),4)-((MR-Q_evap_forced_psy-Q_conv_forced_psy)/E/o/Ar_Ad),0.25)-273.15
+	
+	#calculate mean radiant temperature when "dep" parameter is specified to solve for required air speed
+	temp_MRT = temp_air - dep
+	
+	#linearizing radiant heat transfer coefficient 
 	h_r_forced_v = 4*E*o*Ar_Ad*np.power((273.15+(temp_skin+temp_MRT)/2),3)
+
+	#linearized radiant heat transfer
+	Q_rad_forced_v = np.zeros((dim2, dim1)) 
 	Q_rad_forced_v = h_r_forced_v*E*(temp_skin-temp_MRT)
+
+	#required air speed for thermal comfort using the 'dep' parameter to fix the mean radiant temperature
+	v_forced_v = np.zeros((dim2, dim1))
 	v_forced_v = np.power(((MR-Q_rad_forced_v)/(10.1*(LR*w*(P_sat_skin_psy-P_sat_air_psy)+(temp_skin-temp_air)))),(1/0.61))
 
-	#print(T_MRT_forced_psy)
-			
+
 
 	#Define flask image
 	img = io.BytesIO()
 
-	#print T_MRT_psy
 	plt.figure(figsize=(15,10))
 	X,Y = np.meshgrid(RH_psy_init, temp_air_init)
 
-
+	#set text size
 	textsize = 20
 
-	a=17.08
-	b=234.18
-	saturation_psy = 1000*0.62198*np.exp(77.345+0.0057*(temp_air+273.15)-7235/(temp_air+273.15))/(101325*np.power((temp_air+273.15),8.2)-np.exp(77.345+0.0057*(temp_air+273.15)-7235/(temp_air+273.15)))
-
+	#set transparency
 	alph = 0.6
 	plt.plot(temperature, saturation, 'k-', linewidth = 1, alpha = 1)
 	plt.plot(temperature, saturation*.9, 'k-', linewidth = 1 , alpha = alph)
@@ -125,6 +175,7 @@ def plot_psychro(temp_air_init = np.arange(10, 35, .5),
 	plt.plot(temperature, saturation*.2, 'k-', linewidth = 1,alpha = alph)
 	plt.plot(temperature, saturation*.1, 'k-', linewidth = 1,alpha = alph)
 
+	#select desired plot using input-based logic 
 	if dep != 0:
 
 		levels_contour = np.linspace(0.1, 2, 150)
