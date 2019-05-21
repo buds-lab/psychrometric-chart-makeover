@@ -26,7 +26,7 @@ application = Flask(__name__)
 @application.route('/')
 def graphs():
 	matplotlib.use('agg') #Matplotlib needs to be in this format for web compatibility
-	form_values ={"MR": 69.8, "w": 0.06, "v": 0.1, "Ar_Ad": 0.7, "E": 0.98}
+	form_values ={"MR": 69.8, "w": 0.06, "v": 0.1, "dep": 0, "E": 0.98}
 	graph1_url, T_MRT_forced_psy = plot_psychro();
 	#graph1_url, x1 = build_graph()
 	return render_template('graphs.html', graph1=graph1_url, form_values = form_values)
@@ -40,19 +40,19 @@ def my_form_post():
 	MR = float(request.form['mr'])
 	w = float(request.form['w'])
 	v = float(request.form['v'])
-	Ar_Ad = float(request.form['Ar_Ad'])
+	dep = float(request.form['dep'])
 	E = float(request.form['E'])
 
 	#Update form values for subsequent render of page
-	form_values ={"MR": MR, "w": w, "v": v, "Ar_Ad": Ar_Ad, "E": E}
+	form_values ={"MR": MR, "w": w, "v": v, "dep": dep, "E": E}
 
 	#Plot graph with new form values
-	graph1_url, T_MRT_forced_psy = plot_psychro(temp_air = np.arange(10, 35, .2), 
-				RH_psy = np.arange(0,100,.2)/100, 
+	graph1_url, T_MRT_forced_psy = plot_psychro(temp_air_init = np.arange(10, 35, .5), 
+				RH_psy_init = np.arange(0,100,1)/100, 
 				MR = MR,
 				w=w,
 				v=v,
-				Ar_Ad = Ar_Ad,
+				dep = dep,
 				E=E);
 	#graph1_url, x1 = build_graph() # For AWS debugging
 	return render_template('graphs.html', graph1=graph1_url, form_values = form_values)

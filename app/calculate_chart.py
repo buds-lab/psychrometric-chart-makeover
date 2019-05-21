@@ -17,21 +17,27 @@ import base64
 #plt.rc('text', usetex=True)
 plt.rc('font', family='sanserif')
 
-def plot_psychro(temp_air = np.arange(10, 35, .2), 
-				RH_psy = np.arange(0,100,.2)/100, 
+def plot_psychro(temp_air_init = np.arange(10, 35, .5), 
+				RH_psy_init = np.arange(0,100,1)/100, 
 				MR = 69.8,
 				w=0.06,
 				v=.1,
-				Ar_Ad = 0.7,
+				dep = 0,
 				E=0.98):
 
 
 	#Stephan Botlztmans constant
 	o = 0.00000005670367
 
+	Ar_Ad = 0.7
+
 	LR = 16.5
 	#define psychrometric temp bounds
 	temperature = np.arange(5, 35, 0.1)
+
+	#redefine temp anr RH arrays
+	temp_air = np.tile(np.array(temp_air_init),(len(RH_psy_init),1)).transpose()
+	RH_psy = np.tile(np.array(RH_psy_init),(len(temp_air_init),1))
 
 	#clausius-clapyron constants
 	a=17.08
@@ -59,35 +65,38 @@ def plot_psychro(temp_air = np.arange(10, 35, .2),
 
 	#vapor pressure of water on skin's surface
 	P_sat_skin_psy = np.power(2.718,(77.3450+0.0057*(temp_skin+273.15)-7235/(temp_skin+273.15)))/(np.power((temp_skin+273.15),8.2))/1000
-	P_sat_air_psy = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	Q_conv_free_psy = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	Q_evap_free_psy = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	T_MRT_psy = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	Q_conv_forced_psy = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	Q_evap_forced_psy = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	T_MRT_forced_psy = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	psy_sat = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
-	temp_MRT = temp_air 
-	Q_rad_forced_v = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))] 
-	v_forced_v = [[0 for x in range(len(RH_psy))] for x in range(len(temp_air))]
+	dim1 = len(RH_psy)
+	dim2 = len(temp_air)
+	P_sat_air_psy = np.zeros((dim2, dim1))
+	Q_conv_free_psy = np.zeros((dim2, dim1))
+	Q_evap_free_psy = np.zeros((dim2, dim1))
+	T_MRT_psy = np.zeros((dim2, dim1))
+	Q_conv_forced_psy = np.zeros((dim2, dim1))
+	Q_evap_forced_psy = np.zeros((dim2, dim1))
+	T_MRT_forced_psy = np.zeros((dim2, dim1))
+	psy_sat = np.zeros((dim2, dim1))
+	temp_MRT = temp_air - dep
+	Q_rad_forced_v = np.zeros((dim2, dim1)) 
+	v_forced_v = np.zeros((dim2, dim1))
 
-	for i in range(len(temp_air)):
-		for k in range(len(RH_psy)):
-			P_sat_air_psy[i][k] = np.power(2.718,(77.3450+0.0057*(temp_air[i]+273.15)-7235/(temp_air[i]+273.15)))/(np.power((temp_air[i]+273.15),8.2))/1000*RH_psy[k]
-			h_c_free_psy = 0.78*np.power(np.absolute(temp_skin[i]-temp_air[i]),0.56)
-			Q_conv_free_psy[i][k] = h_c_free_psy*(temp_skin[i]-temp_air[i])    
-			h_e_free_psy = h_c_free_psy*LR
-			Q_evap_free_psy[i][k] = h_e_free_psy*w*(P_sat_skin_psy[i]-P_sat_air_psy[i][k])
-			T_MRT_psy[i][k] = np.power(np.power((temp_skin[i]+273.15),4)-((MR-Q_evap_free_psy[i][k]-Q_conv_free_psy[i][k])/E/o/Ar_Ad),0.25)-273.15
-			h_c_forced_psy = 10.1*np.power(v,0.61)
-			Q_conv_forced_psy[i][k] = h_c_forced_psy*(temp_skin[i]-temp_air[i])      
-			h_e_forced_psy = h_c_forced_psy*LR
-			Q_evap_forced_psy[i][k] = h_e_forced_psy*w*(P_sat_skin_psy[i]-P_sat_air_psy[i][k])
-			T_MRT_forced_psy[i][k] = np.power(np.power((temp_skin[i]+273.15),4)-((MR-Q_evap_forced_psy[i][k]-Q_conv_forced_psy[i][k])/E/o/Ar_Ad),0.25)-273.15
-			psy_sat[i][k] = f(temp_air[i])*RH_psy[k]
-			h_r_forced_v = 4*E*o*Ar_Ad*np.power((273.15+(temp_skin[i]+temp_MRT[i])/2),3)
-			Q_rad_forced_v[i][k] = h_r_forced_v*E*(temp_skin[i]-temp_MRT[i])
-			v_forced_v[i][k] = np.power(((MR-Q_rad_forced_v[i][k])/(10.1*(LR*w*(P_sat_skin_psy[i]-P_sat_air_psy[i][k])+(temp_skin[i]-temp_air[i])))),(1/0.61))
+
+	P_sat_air_psy = np.power(2.718,(77.3450+0.0057*(temp_air+273.15)-7235/(temp_air+273.15)))/(np.power((temp_air+273.15),8.2))/1000*RH_psy
+	h_c_free_psy = 0.78*np.power(np.absolute(temp_skin-temp_air),0.56)
+	Q_conv_free_psy = h_c_free_psy*(temp_skin-temp_air)    
+	h_e_free_psy = h_c_free_psy*LR
+	Q_evap_free_psy = h_e_free_psy*w*(P_sat_skin_psy-P_sat_air_psy)
+	T_MRT_psy = np.power(np.power((temp_skin+273.15),4)-((MR-Q_evap_free_psy-Q_conv_free_psy)/E/o/Ar_Ad),0.25)-273.15
+	h_c_forced_psy = 10.1*np.power(v,0.61)
+	Q_conv_forced_psy = h_c_forced_psy*(temp_skin-temp_air)      
+	h_e_forced_psy = h_c_forced_psy*LR
+	Q_evap_forced_psy = h_e_forced_psy*w*(P_sat_skin_psy-P_sat_air_psy)
+	T_MRT_forced_psy = np.power(np.power((temp_skin+273.15),4)-((MR-Q_evap_forced_psy-Q_conv_forced_psy)/E/o/Ar_Ad),0.25)-273.15
+	psy_sat = 1000*0.62198*np.exp(77.345+0.0057*(temp_air+273.15)-7235/(temp_air+273.15))/(101325*np.power((temp_air+273.15),8.2)-np.exp(77.345+0.0057*(temp_air+273.15)-7235/(temp_air+273.15)))*RH_psy
+	h_r_forced_v = 4*E*o*Ar_Ad*np.power((273.15+(temp_skin+temp_MRT)/2),3)
+	Q_rad_forced_v = h_r_forced_v*E*(temp_skin-temp_MRT)
+	v_forced_v = np.power(((MR-Q_rad_forced_v)/(10.1*(LR*w*(P_sat_skin_psy-P_sat_air_psy)+(temp_skin-temp_air)))),(1/0.61))
+
+	#print(T_MRT_forced_psy)
 			
 
 	#Define flask image
@@ -95,13 +104,8 @@ def plot_psychro(temp_air = np.arange(10, 35, .2),
 
 	#print T_MRT_psy
 	plt.figure(figsize=(15,10))
-	X,Y = np.meshgrid(RH_psy, temp_air)
-	levels_one = np.linspace(1,1.01,2)
-	levels_half = np.linspace(0.5,0.505,2)
-	levels_two = np.linspace(2,2.01,2)
-	levels_three = np.linspace(3,3.02,2)
-	levels_four = np.linspace(4,4.04,2)
-	levels_six = np.linspace(6,6.06,2)
+	X,Y = np.meshgrid(RH_psy_init, temp_air_init)
+
 
 	textsize = 20
 
@@ -111,7 +115,7 @@ def plot_psychro(temp_air = np.arange(10, 35, .2),
 
 	alph = 0.6
 	plt.plot(temperature, saturation, 'k-', linewidth = 1, alpha = 1)
-	plt.plot(temperature, saturation*.9, 'k-', linewidth = 1 , alpha = 1)
+	plt.plot(temperature, saturation*.9, 'k-', linewidth = 1 , alpha = alph)
 	plt.plot(temperature, saturation*.8, 'k-', linewidth = 1, alpha = alph)
 	plt.plot(temperature, saturation*.7, 'k-', linewidth = 1,alpha = alph)
 	plt.plot(temperature, saturation*.6, 'k-', linewidth = 1,alpha = alph)
@@ -119,27 +123,30 @@ def plot_psychro(temp_air = np.arange(10, 35, .2),
 	plt.plot(temperature, saturation*.4, 'k-', linewidth = 1,alpha = alph)
 	plt.plot(temperature, saturation*.3, 'k-', linewidth = 1,alpha = alph)
 	plt.plot(temperature, saturation*.2, 'k-', linewidth = 1,alpha = alph)
-	plt.plot(temperature, saturation*.1, 'k-', linewidth = 1,alpha = 1)
+	plt.plot(temperature, saturation*.1, 'k-', linewidth = 1,alpha = alph)
 
-	#Forced Convection Plots. 
-	levels_psy_forced = np.linspace(np.amin(T_MRT_forced_psy), np.amax(T_MRT_forced_psy), 15)
-	levels_wb_forced = np.linspace(-0.01,0.01,2)
-	CS3=plt.contourf(Y, psy_sat, T_MRT_forced_psy, cmap = 'jet', levels=levels_psy_forced,interpolation='sinc', fontsize = 20, dpi = 1200, alpha = 1)
-	CS = plt.contour(Y, psy_sat, T_MRT_forced_psy, 20, colors='k', alpha = 1)
-	plt.clabel(CS, inline=3, fmt='%1.1f', fontsize=textsize)
-	#plt.contour(Y, psy_sat, wet_bulb_compare_forced, cmap = 'ocean', levels=levels_wb_forced, interpolation='sinc', fontsize = 20, dpi = 1200)
+	if dep != 0:
+
+		levels_contour = np.linspace(0.1, 2, 150)
+		CS3=plt.contourf(Y, psy_sat, v_forced_v, cmap = 'jet', levels=levels_contour,interpolation='sinc', fontsize = 20, dpi = 1200, alpha = 0.6)
+		cbar = plt.colorbar(CS3, orientation='vertical', format="%.1f")
+		plt.text(38.5,-1.75,"m/s", size=textsize)
 	
-	#PJ commented these out
-	#plt.contour(Y, psy_sat, equivalent_forced, cmap = 'ocean', levels=levels_wb_forced, interpolation='sinc', fontsize = 20, dpi = 600)
-	#plt.contour(Y, psy_sat, dew_point_compare_forced, cmap = 'ocean', levels=levels_wb_forced, interpolation='sinc', fontsize = 20, dpi = 600)
-	#plt.contourf(Y, psy_sat, Q_comp_rat, cmap = 'ocean', levels=levels_one, interpolation='sinc', fontsize = 20, dpi = 600)
-	#plt.contourf(Y, psy_sat, Q_comp_rat, cmap = 'ocean', levels=levels_half, interpolation='sinc', fontsize = 20, dpi = 600)
-	#plt.contourf(Y, psy_sat, Q_comp_rat, cmap = 'ocean', levels=levels_two, interpolation='sinc', fontsize = 20, dpi = 600)
-	#plt.contourf(Y, psy_sat, Q_comp_rat, cmap = 'ocean', levels=levels_three, interpolation='sinc', fontsize = 20, dpi = 600)
-	#plt.contourf(Y, psy_sat, Q_comp_rat, cmap = 'ocean', levels=levels_four, interpolation='sinc', fontsize = 20, dpi = 600)
-	#plt.contourf(Y, psy_sat, Q_comp_rat, cmap = 'ocean', levels=levels_six, interpolation='sinc', fontsize = 20, dpi = 600)
-	cbar = plt.colorbar(CS3, orientation='vertical', format="%.1f")
-
+	elif v < 0.2:
+		levels_contour = np.linspace(np.amin(T_MRT_psy), np.amax(T_MRT_psy), 15)
+		CS3=plt.contourf(Y, psy_sat, T_MRT_psy, cmap = 'jet', levels=levels_contour,interpolation='sinc', fontsize = 20, dpi = 1200, alpha = 0.6)
+		CS = plt.contour(Y, psy_sat, T_MRT_psy, 13, colors='k', alpha = 1)
+		plt.clabel(CS, inline=3, fmt='%1.1f', fontsize=textsize)
+		cbar = plt.colorbar(CS3, orientation='vertical', format="%.1f")
+		plt.text(38.5,-1.75,"MRT $^\circ$C", size=textsize)
+	else:
+		#Forced Convection Plots. 
+		levels_contour = np.linspace(np.amin(T_MRT_forced_psy), np.amax(T_MRT_forced_psy), 15)
+		CS3=plt.contourf(Y, psy_sat, T_MRT_forced_psy, cmap = 'jet', levels=levels_contour,interpolation='sinc', fontsize = 20, dpi = 1200, alpha = 0.6)
+		CS = plt.contour(Y, psy_sat, T_MRT_forced_psy, 20, colors='k', alpha = 1)
+		plt.clabel(CS, inline=3, fmt='%1.1f', fontsize=textsize)
+		cbar = plt.colorbar(CS3, orientation='vertical', format="%.1f")
+		plt.text(38.5,-1.75,"MRT $^\circ$C", size=textsize)
 
 	plt.text(35.5, 2.7, '10%',size=textsize)
 	plt.text(35.5, 6.8, '20%',size=textsize)
@@ -149,24 +156,10 @@ def plot_psychro(temp_air = np.arange(10, 35, .2),
 	plt.text(35.5, 21.5, '60%',size=textsize)
 	plt.text(35.5, 25.2, '70%',size=textsize)
 	plt.text(34, 28.1, '80%',size=textsize)
-	plt.text(31.8, 28.1, '90%',size=textsize)
+	plt.text(30.8, 28.1, '90%',size=textsize)
 	plt.text(27, 27, '100%',size=textsize)
 
 
-
-	#plt.text(10, 10.5, 'Q$rad$/Q$conv$ = 0.5')
-	#plt.text(16, 12, '1')
-	#plt.text(19.5, 15.5, '2')
-	#plt.text(22.7, 18.3, '4')
-
-	plt.text(43.5,-1.75,"MRT $^\circ$C", size=textsize)
-
-	#plt.text(21,14,"Dehumidification with", fontsize=textsize)
-	#plt.text(22,12.5,"M-Cycle EC", fontsize=textsize)
-	#plt.text(20,2,"Wet-bulb EC", fontsize=textsize)
-	#plt.text(23.5,8,"M-Cycle EC", fontsize=textsize)
-
-	#plt.title("Forced Convection")
 	plt.xlabel("Air Temperature $^\circ$C", size=textsize)
 	plt.ylabel("Humidity Ratio (g water/kg dry air)",size=textsize)
 
