@@ -29,7 +29,7 @@ def graphs():
 	form_values ={"MR": 69.8, "w": 0.06, "v": 0.1, "dep": 0, "E": 0.98}
 	graph1_url, T_MRT_forced_psy = plot_psychro();
 	#graph1_url, x1 = build_graph()
-	return render_template('graphs.html', graph1=graph1_url, form_values = form_values)
+	return render_template('graphs.html', graph1=graph1_url, form_values = form_values, new_values=False)
 
 
 #Post Method: When someone submits new values
@@ -55,7 +55,7 @@ def my_form_post():
 				dep = dep,
 				E=E);
 	#graph1_url, x1 = build_graph() # For AWS debugging
-	return render_template('graphs.html', graph1=graph1_url, form_values = form_values)
+	return render_template('graphs.html', graph1=graph1_url, form_values = form_values, new_values=True)
 
 # A simple plotting function for AWS server side debugging independent of calc_cart.py
 def build_graph():
@@ -73,4 +73,4 @@ def build_graph():
 if __name__ == '__main__':
 	#Running the application, both locally and via WSGI
 	#Debug must be False in production mode to prevent memeory overloads
-	application.run(debug=False)
+	application.run(debug=True)

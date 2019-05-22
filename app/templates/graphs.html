@@ -24,21 +24,28 @@
   	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
   	<link rel="stylesheet" href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css"/>
 
+      <!-- JS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+    <script type = "text/javascript"  src = "{{ url_for('static', filename = 'js/hello.js') }}" ></script>
+        <script type = "text/javascript"  src = "{{ url_for('static', filename = 'js/chartScroll.js') }}" ></script>
+
   <!-- Favicon
   	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  	<link rel="icon" type="image/png" href="img/favicon.ico">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
   </head>
 
-<body class="sans-serif">
+<body class="sans-serif ">
 
-<div class="bg-black-90 w-100 ph3 pv3 pv4-ns ph4-m ph5-l">
-<h1 class="f2 f1-l fw2 white-90 mb0 lh-title">Psychrometric Chart</h1>
+<div class="bg-black-90 w-100 ph3 pv3 pv4-ns ph4-m ph7-l">
+<h1 class="f2 f1-l fw2 white-90 mb0 lh-title ph4-l">Psychrometric Chart</h1>
 </div>
 
 
 
-<div>
+
+<div class = "ph7-l">
 <form method="POST" class="pa4 black-80">
 	
 	<label for="name" class="f6 b db mb2">Metabolic Rate <span class="normal black-60">46.5 = asleep; 69.8 = office work; 116.3 = brisk walk</span></label>
@@ -60,8 +67,15 @@
 
 </form>
 
-
 <img src='{{graph1}}' alt="my plot"></img>
+
+<div>
+    {% if new_values %}
+ <script type="text/javascript">
+   scrollMobile();
+</script>
+    {% endif %}
+</div>
 
 </div>
 </body>
