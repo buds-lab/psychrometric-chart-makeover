@@ -30,87 +30,110 @@
 
 
       <!-- JS
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <script type = "text/javascript"  src = "{{ url_for('static', filename = 'js/chartScroll.js') }}" ></script>
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <script type = "text/javascript"  src = "{{ url_for('static', filename = 'js/chartScroll.js') }}" ></script>
 
   <!-- Favicon
   	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
   </head>
 
-<body class="sans-serif ">
+  <body class="sans-serif ">
 
-<div class="bg-black-90 w-100 ph3 pv3 pv4-ns ph4-m ph7-l">
-<h1 class="f2 f1-l fw2 white-90 mb0 lh-title ph4-l">Psychrometric Chart</h1>
-</div>
-
-
-
-
-<div class = "ph7-l">
-<form method="POST" class="pa4 black-80">
-	
-	<label for="name" class="f6 b db mb2">Metabolic Rate [met] <span class="normal black-60">0.8 = asleep; 1.2 = office work; 2.0 = brisk walk</span></label>
-    <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="0" step="any" name="mr" value="{{form_values.MR}}" required="required">
-
-	
-	<label for="name" class="f6 b db mb2">Skin Wettedness <span class="normal black-60">Minimum 0.06 (dry) to maximum 0.8 (sweaty).</span></label>
-    <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="0.06" max="0.8" step="any" name="w" value="{{form_values.w}}" required="required">
-	
-	<label for="name" class="f6 b db mb2">Air Speed [m/s] <span class="normal black-60">
-<button type=button class="tl f6 ba b--none pa0 dib black-60 bg-white" data-balloon-length="medium" data-balloon="Note: for values < 0.2 m/s this algorithm uses a natural convection solver." data-balloon-pos="down"> Minimum 0, maximum 10. <i class="far fa-question-circle"></i> </button>
-
-    
-  </span></label>
-    <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="0" max="10" step="any" name="v" value="{{form_values.v}}" required="required">  
-	
-	<label for="name" class="f6 b db mb2">T<sub>air</sub> - T<sub>MRT</sub> [<span>&#176;</span>C] <span class="normal black-60">   
-<button type=button class=" tl f6 ba b--none  pa0 dib black-60 bg-white" data-balloon-length="medium" data-balloon="@erik, please explain in more detail what this input is" data-balloon-pos="down">Minimum -10, maximum 10. Note: for values <span>&#8800;</span> 0 solve for wind speed and ignore 'Air Speed' input. <i class="far fa-question-circle"></i> </button>
-
-  </span>
-</label>
-    <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="-10" max="10" step="any" name="dep" value="{{form_values.dep}}" required="required"> 
-    
-    <label for="name" class="f6 b db mb2">Emissivity of Skin <span class="normal black-60">Default value 0.98. Minimum 0.90, maximum 1. </span></label>    
-    <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="0.9" max="1" step="any" name="E" value="{{form_values.E}}" required="required">
-
-    <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6" type="submit" value="Submit">
-
-</form>
-
-  <div class="center tc">
-    <button class="f6 ba b--none ph3 pv2 mb2 dib gray bg-white" data-balloon-length="large" data-balloon="Wow What a colourful graph? This may surpass your window dimensions. Imagine you're on that boring class with that boring teacher and you didn't slept so well last night. Suddenly you're sleeping in class. Can you believe it?!" data-balloon-pos="up">How to intepret this graph <i class="far fa-question-circle"></i> </button>
+  <!-- Header-->
+    <div class="bg-black-90 w-100 ph3 pv3 pv4-ns ph4-m ph7-l">
+      <h1 class="f2 f1-l fw2 white-90 mb0 lh-title ph4-l">Psychrometric Chart</h1>
     </div>
 
 
-<img src='{{graph1}}' alt="my plot"></img>
+
+  <!-- Form -->
+    <div class = "ph7-l">
+      <form method="POST" class="pa4 black-80">
+
+         <label for="name" class="f6 b db mb2">Metabolic Rate [met] 
+          <span class="normal black-60">0.8 = asleep; 1.2 = office work; 2.0 = brisk walk</span></label>
+        <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="0" step="any" name="mr" value="{{form_values.MR}}" required="required">
+        
+        <label for="name" class="f6 b db mb2">Skin Wettedness 
+          <span class="normal black-60">Minimum 0.06 (dry) to maximum 0.8 (sweaty).</span></label>
+        <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="0.06" max="0.8" step="any" name="w" value="{{form_values.w}}" required="required">
+
+        <label for="name" class="f6 b db mb2">Air Speed [m/s] 
+          <span class="normal black-60">
+            <button 
+              type=button 
+              class="tl f6 ba b--none pa0 dib black-60 bg-white" 
+              data-balloon-length="medium" 
+              data-balloon="Note: for values < 0.2 m/s this algorithm uses a natural convection solver. @eric, is this correct?" 
+              data-balloon-pos="down"> 
+              Minimum 0, maximum 10. <i class="far fa-question-circle"></i> 
+          </button>
+        </span>
+      </label>
+      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="0" max="10" step="any" name="v" value="{{form_values.v}}" required="required">  
+
+        <label for="name" class="f6 b db mb2">T<sub>air</sub> - T<sub>MRT</sub> [<span>&#176;</span>C] 
+          <span class="normal black-60">   
+            <button type=button 
+            class=" tl f6 ba b--none  pa0 dib black-60 bg-white" 
+            data-balloon-length="medium" 
+            data-balloon="@eric time to explain below what this convoluted input means" data-balloon-pos="down">
+            Minimum -10, maximum 10. Note: for values <span>&#8800;</span> 0 solve for wind speed and ignore 'Air Speed' input. <i class="far fa-question-circle"></i> 
+          </button>
+        </span>
+      </label>
+      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="-10" max="10" step="any" name="dep" value="{{form_values.dep}}" required="required"> 
+
+      <label for="name" class="f6 b db mb2">Emissivity of Skin <span class="normal black-60">Default value 0.98. Minimum 0.90, maximum 1. 
+      </span></label>    
+      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="0.9" max="1" step="any" name="E" value="{{form_values.E}}" required="required">
+
+      <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6" type="submit" value="Submit">
+
+    </form>
+
+ <!-- Form Info Text -->
+    <div class="center tc">
+      <button 
+        class="f6 ba b--none ph3 pv2 mb2 dib gray bg-white" 
+        data-balloon-length="large" 
+        data-balloon="Wow What a colourful graph? This may surpass your window dimensions. Imagine you're on that boring class with that boring teacher and you didn't slept so well last night. Suddenly you're sleeping in class. Can you believe it?! I'm sure you can, this is just filler text till @eric modifies it and explains what is going on below. I just wrote a lot to simulate what it might be like to have a lot of text popping up all of a sudden. Wow" 
+        data-balloon-pos="up">
+        How to intepret this graph <i class="far fa-question-circle"></i> 
+      </button>
+    </div>
+
+ <!-- Graph -->
+    <img src='{{graph1}}' alt="my plot"></img>
 
 
+ <!-- Some auto scrolling script -->
+    <div>
+      {% if new_values %}
+      <script type="text/javascript">
+       scrollMobile();
+     </script>
+     {% endif %}
+   </div>
 
-<div>
-    {% if new_values %}
- <script type="text/javascript">
-   scrollMobile();
-</script>
-    {% endif %}
-</div>
+ </div>
 
-</div>
-
-<footer class="pa4 pa5-l black-70 bt b--black-10">
+ <!-- Footer -->
+ <footer class="pa4 pa5-l black-70 bt b--black-10">
   <div class="mb4-l cf">
 
-<!--     <h1 class="fl w-100 pv0 f6 fw6 ttu tracked mb4">Made By</h1> -->
+    <!--     <h1 class="fl w-100 pv0 f6 fw6 ttu tracked mb4">Made By</h1> -->
     <article class="fl w-100 dib-ns w-auto-ns mr4-m mr5-l mb4 pr2 pl0-ns">
 
 
       <div class="f5 pb2 f4-l fw3"> <a href="https://www.sciencedirect.com/science/article/pii/S1876610217333672" target = "_blank" class="black-70 link dim"> References</a> </div>
       <span class="f7 f6-l db black-70 pb1">Eric Teitelbauma, Prageeth Jayathissa, Clayton Miller, Forrest Meggers</span>
-            <span class="f7 f6-l db black-70 pb1">Design with Comfort:  Enhancing the psychrometricchart with radiation and convection dimensions</span>
+      <span class="f7 f6-l db black-70 pb1">Design with Comfort:  Enhancing the psychrometricchart with radiation and convection dimensions</span>
       <span class="f7 f6-l db black-70">In Review</span>
       <span class="f7 f6-l db black-70"></span>
- 
+
 
     </article>
 
@@ -125,7 +148,7 @@
       </a>
     </article>
     <article class="fl w-50 dib-ns w-auto-ns mr4-m mr5-l mb4 pr2 pl0-ns">
-      
+
       <div class="f5 pb4 f4-l fw6"> <a href="https://chaos.princeton.edu/" target = "_blank" class="black-70 link dim"> CHAOS Lab</a> </div>
 
       <span class="f7 f6-l db black-70">Forrest Meggers</span>
@@ -140,11 +163,6 @@
       </a>
     </article>
 
-
-
-
-    
-  
   </div>
 
   <div class="dt dt--fixed w-100" >
@@ -157,11 +175,11 @@
     <div class="db dtc-ns black-70 tc tr-ns v-mid">
 
       <a href="https://github.com/buds-lab/psychrometric-chart-makeover" class="link dim dib mr3 black-70" title="Git Source Code" target="_blank">
-          <i class="fab fa-github fa-2x"></i>
+        <i class="fab fa-github fa-2x"></i>
       </a>
 
       <a href="https://www.researchgate.net/publication/319016822_Expanded_psychrometric_landscapes_for_radiant_cooling_and_natural_ventilation_system_design_and_optimization" class="link dim dib mr3 black-70" title="Git Source Code" target="_blank">
-          <i class="fab fa-researchgate fa-2x"></i>
+        <i class="fab fa-researchgate fa-2x"></i>
       </a>
 
 
@@ -173,14 +191,14 @@
       Copyright © Chaotic-Buds 2019
     </p>
     <div class="center tc">
-    <a href="https://chaos.princeton.edu/" target = "_blank" class="black-70 link dim"> 
-      <img class= "mw2" src="{{url_for('static', filename='img/chaosLogo.png')}}" style="filter: grayscale(100%);"/> </a>
-    <a href="https://www.budslab.org" target = "_blank" class="black-70 link dim"> 
-      <img class= "mw4" src="{{url_for('static', filename='img/budslab_banner.png')}}" style="filter: grayscale(100%);"/>
-    </a>
-  </div>
-  </div>
-</footer>
+      <a href="https://chaos.princeton.edu/" target = "_blank" class="black-70 link dim"> 
+        <img class= "mw2" src="{{url_for('static', filename='img/chaosLogo.png')}}" style="filter: grayscale(100%);"/> </a>
+        <a href="https://www.budslab.org" target = "_blank" class="black-70 link dim"> 
+          <img class= "mw4" src="{{url_for('static', filename='img/budslab_banner.png')}}" style="filter: grayscale(100%);"/>
+        </a>
+      </div>
+    </div>
+  </footer>
 </body>
 
 </html>
