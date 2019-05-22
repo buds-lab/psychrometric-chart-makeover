@@ -41,20 +41,20 @@
 <div>
 <form method="POST" class="pa4 black-80">
 	
-	<label for="name" class="f6 b db mb2">Metabolic Rate <span class="normal black-60">46.5 = asleep; 69.8 = office work; 116.3 = brisk walk</span></label>
-    <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" step="any" name="mr" value="{{form_values.MR}}" required="required">
+	<label for="name" class="f6 b db mb2">Metabolic Rate [met] <span class="normal black-60">0.8 = asleep; 1.2 = office work; 2.0 = brisk walk</span></label>
+    <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="0" step="any" name="mr" value="{{form_values.MR}}" required="required">
 	
-	<label for="name" class="f6 b db mb2">Skin Wettedness <span class="normal black-60">0.06 (dry) to 0.8 (sweaty)</span></label>
-    <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" step="any" name="w" value="{{form_values.w}}" required="required">
+	<label for="name" class="f6 b db mb2">Skin Wettedness <span class="normal black-60">Minimum 0.06 (dry) to maximum 0.8 (sweaty).</span></label>
+    <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="0.06" max="0.8" step="any" name="w" value="{{form_values.w}}" required="required">
 	
-	<label for="name" class="f6 b db mb2">Air Speed <span class="normal black-60">Values < 0.2 m/s use free convection solver.</span></label>
-    <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" step="any" name="v" value="{{form_values.v}}" required="required">  
+	<label for="name" class="f6 b db mb2">Air Speed [m/s] <span class="normal black-60">Values < 0.2 m/s use natural convection solver. Minimum 0, maximum 10. </span></label>
+    <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="0" max="10" step="any" name="v" value="{{form_values.v}}" required="required">  
 	
-	<label for="name" class="f6 b db mb2">T<sub>air</sub> - T<sub>MRT</sub> <span class="normal black-60">Values <span>&#8800;</span> 0 solve for wind speed and ignore 'Air Speed' input.</span></label>
-    <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" step="any" name="dep" value="{{form_values.dep}}" required="required"> 
+	<label for="name" class="f6 b db mb2">T<sub>air</sub> - T<sub>MRT</sub> [<span>&#176;</span>C] <span class="normal black-60">Values <span>&#8800;</span> 0 solve for wind speed and ignore 'Air Speed' input. Minimum -10, maximum 10.</span></label>
+    <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="-10" max="10" step="any" name="dep" value="{{form_values.dep}}" required="required"> 
     
-    <label for="name" class="f6 b db mb2">Emissivity of Skin <span class="normal black-60">Default value 0.98</span></label>    
-    <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" step="any" name="E" value="{{form_values.E}}" required="required">
+    <label for="name" class="f6 b db mb2">Emissivity of Skin <span class="normal black-60">Default value 0.98. Minimum 0.90, maximum 1. </span></label>    
+    <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="0.9" max="1" step="any" name="E" value="{{form_values.E}}" required="required">
 
     <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6" type="submit" value="Submit">
 
