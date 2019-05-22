@@ -73,4 +73,4 @@ def build_graph():
 if __name__ == '__main__':
 	#Running the application, both locally and via WSGI
 	#Debug must be False in production mode to prevent memeory overloads
-	application.run(debug=True)
+	application.run(debug=False)

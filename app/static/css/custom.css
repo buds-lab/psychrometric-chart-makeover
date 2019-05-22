@@ -1,11 +1,13 @@
-.button:hover .tooltip{
+/*.button:hover .tooltip{
   display: block;
   bottom: 40px;
   left: 40px;
 }
 
-.button:click .tooltip{
+.button:active .tooltip{
   display: block;
   bottom: 40px;
   left: 40px;
 }
+
+*/
