@@ -1,0 +1,11 @@
+.button:hover .tooltip{
+  display: block;
+  bottom: 40px;
+  left: 40px;
+}
+
+.button:click .tooltip{
+  display: block;
+  bottom: 40px;
+  left: 40px;
+}
