@@ -24,8 +24,8 @@ def plot_psychro(
 				#%RH range over which calculations are performed [%RH/100]
 				RH_psy_init = np.arange(0,100,1)/100, 
 				
-				#metabolic rate for a person in [W/m2]. default value is 69.8 W/m2, equivalent to 1.2 met (the other unit for metabolic rate)
-				MR = 69.8,
+				#metabolic rate for a person set to 1.2 [met] 
+				MR = 1.2,
 				
 				#skin wettedness parameter, [unitless]
 				#0.06 for dry skin, accounts for diffusion through skin
@@ -45,6 +45,8 @@ def plot_psychro(
 				#values in the literature vary between 0.95 to 0.98
 				E=0.98):
 
+	#convert to [W/m2]
+	MR= MR*58.1666666
 
 	#Stephan Botlztmans constant
 	o = 0.00000005670367
@@ -179,13 +181,13 @@ def plot_psychro(
 	if dep != 0:
 
 		levels_contour = np.linspace(0.1, 2, 150)
-		CS3=plt.contourf(Y, psy_sat, v_forced_v, cmap = 'jet', levels=levels_contour,interpolation='sinc', fontsize = 20, dpi = 1200, alpha = 0.6)
+		CS3=plt.contourf(Y, psy_sat, v_forced_v, cmap = 'jet', levels=levels_contour, alpha = 0.6)
 		cbar = plt.colorbar(CS3, orientation='vertical', format="%.1f")
 		plt.text(38.5,-1.75,"m/s", size=textsize)
 	
 	elif v < 0.2:
 		levels_contour = np.linspace(np.amin(T_MRT_psy), np.amax(T_MRT_psy), 15)
-		CS3=plt.contourf(Y, psy_sat, T_MRT_psy, cmap = 'jet', levels=levels_contour,interpolation='sinc', fontsize = 20, dpi = 1200, alpha = 0.6)
+		CS3=plt.contourf(Y, psy_sat, T_MRT_psy, cmap = 'jet', levels=levels_contour, alpha = 0.6)
 		CS = plt.contour(Y, psy_sat, T_MRT_psy, 13, colors='k', alpha = 1)
 		plt.clabel(CS, inline=3, fmt='%1.1f', fontsize=textsize)
 		cbar = plt.colorbar(CS3, orientation='vertical', format="%.1f")
@@ -193,7 +195,7 @@ def plot_psychro(
 	else:
 		#Forced Convection Plots. 
 		levels_contour = np.linspace(np.amin(T_MRT_forced_psy), np.amax(T_MRT_forced_psy), 15)
-		CS3=plt.contourf(Y, psy_sat, T_MRT_forced_psy, cmap = 'jet', levels=levels_contour,interpolation='sinc', fontsize = 20, dpi = 1200, alpha = 0.6)
+		CS3=plt.contourf(Y, psy_sat, T_MRT_forced_psy, cmap = 'jet', levels=levels_contour, alpha = 0.6)
 		CS = plt.contour(Y, psy_sat, T_MRT_forced_psy, 20, colors='k', alpha = 1)
 		plt.clabel(CS, inline=3, fmt='%1.1f', fontsize=textsize)
 		cbar = plt.colorbar(CS3, orientation='vertical', format="%.1f")
