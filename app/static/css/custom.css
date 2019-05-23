@@ -11,3 +11,20 @@
 }
 
 */
+
+.reveal-mrt {
+  display: none;
+}
+
+.reveal-airspeed {
+  display: none;
+}
+
+
+#mrt:checked ~ .reveal-airspeed {
+  display: block;
+}
+
+#airspeed:checked ~ .reveal-mrt {
+  display: block;
+}
