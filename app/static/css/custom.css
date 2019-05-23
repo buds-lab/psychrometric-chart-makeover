@@ -39,7 +39,7 @@
 
 .example-chart::after {
   background: white;
-  background-image: url('https://github.com/buds-lab/psychrometric-chart-makeover/blob/master/app/static/img/chart_example.png?raw=true');
+  background-image: url('https://github.com/buds-lab/psychrometric-chart-makeover/blob/master/app/static/img/chart_example_new.png?raw=true');
   background-size: 400px 300px;
   display: inline-block;
   width: 100%; 
