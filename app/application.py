@@ -29,7 +29,7 @@ def graphs():
 	form_values ={"MR": 1.2, "w": 0.06, "v": 0.1, "dep": 0, "E": 0.98}
 	graph1_url, T_MRT_forced_psy = plot_psychro();
 	#graph1_url, x1 = build_graph()
-	return render_template('graphs.html', graph1=graph1_url, form_values = form_values, new_values=False)
+	return render_template('graphs.html', graph1=graph1_url, form_values = form_values, new_values=False, mrt_checked=True)
 
 
 #Post Method: When someone submits new values
@@ -42,12 +42,23 @@ def my_form_post():
 	v = float(request.form['v'])
 	dep = float(request.form['dep'])
 	E = float(request.form['E'])
+	algorithm = request.form['algorithm']
+
+	print(algorithm)
 
 	#Update form values for subsequent render of page
 	form_values ={"MR": MR, "w": w, "v": v, "dep": dep, "E": E}
 
+	if algorithm == "solve_for_mrt":
+		mrt_checked = True #for feedback to the form
+		dep=0 #Force MRT to equal 0
+	else:
+		mrt_checked = False #for feedback to the form
+		v=0 #force air speed to equal 0
+
 	#Plot graph with new form values
-	graph1_url, T_MRT_forced_psy = plot_psychro(temp_air_init = np.arange(10, 35, .5), 
+	graph1_url, T_MRT_forced_psy = plot_psychro(algorithm = algorithm,
+				temp_air_init = np.arange(10, 35, .5), 
 				RH_psy_init = np.arange(0,100,1)/100, 
 				MR = MR,
 				w=w,
@@ -55,7 +66,7 @@ def my_form_post():
 				dep = dep,
 				E=E);
 	#graph1_url, x1 = build_graph() # For AWS debugging
-	return render_template('graphs.html', graph1=graph1_url, form_values = form_values, new_values=True)
+	return render_template('graphs.html', graph1=graph1_url, form_values = form_values, new_values=True, mrt_checked=mrt_checked)
 
 # A simple plotting function for AWS server side debugging independent of calc_cart.py
 def build_graph():

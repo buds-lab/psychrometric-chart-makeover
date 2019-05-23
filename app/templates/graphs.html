@@ -69,33 +69,59 @@
 
         
 <!-- @PJ can we put an always visible blurb here: -->
-The following two inputs change the algorithms used. Specifying a value for T<sub>air</sub> - T<sub>MRT</sub> that <span>&#8800;</span> 0 fixes the mean radiant temperature, causing the solver to solve for a required air speed for thermal comfort in [m/s]. Leaving T<sub>air</sub> - T<sub>MRT</sub> at 0 but specifying an air speed above 0.2 m/s will still solve for a required mean radiant temperature, but instead will use forced convection instead of natural convection algorithms.  
-        <label for="name" class="f6 b db mb2">Air Speed [m/s] 
-          <span class="normal black-60">
-            <button 
-              type=button 
-              class="tl f6 ba b--none pa0 dib black-60 bg-white" 
+<!-- The following two inputs change the algorithms used. Specifying a value for T<sub>air</sub> - T<sub>MRT</sub> that <span>&#8800;</span> 0 fixes the mean radiant temperature, causing the solver to solve for a required air speed for thermal comfort in [m/s]. Leaving T<sub>air</sub> - T<sub>MRT</sub> at 0 but specifying an air speed above 0.2 m/s will still solve for a required mean radiant temperature, but instead will use forced convection instead of natural convection algorithms.   -->
+
+
+
+      
+      <div class= "pb2">
+
+<!--         This is probably a really inneficient way of rendering the last selected radio button-->        
+
+        {% if mrt_checked %}
+          <input class = "" type="radio" name="algorithm" value="solve_for_mrt" id="mrt" checked> <span class = "f6 b ">Solve for MRT </span>
+          <input class = "" type="radio" name="algorithm" value="solve_for_air_speed" id="airspeed"> <span class = "f6 b ">Solve for air speed</span> <br>
+
+        {% else %}
+          <input class = "" type="radio" name="algorithm" value="solve_for_mrt" id="mrt"> <span class = "f6 b ">Solve for MRT </span> 
+          <input class = "" type="radio" name="algorithm" value="solve_for_air_speed" id="airspeed" checked> <span class = "f6 b ">Solve for air speed</span> <br>
+
+        {% endif %}
+      
+        <div class="reveal-mrt">
+         
+          <label for="name" class="pt2 f6 b db mb2">T<sub>air</sub> - T<sub>MRT</sub> [<span>&#176;</span>C] 
+            <span class="normal black-60">   
+              <button type=button 
+              class=" tl f6 ba b--none  pa0 dib black-60 bg-white" 
               data-balloon-length="medium" 
-              data-balloon="Note: for values < 0.2 m/s this algorithm uses a natural convection solver." 
-              data-balloon-pos="down"> 
-              Minimum 0, maximum 10. <i class="far fa-question-circle"></i> 
-          </button>
-        </span>
-      </label>
-      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="0" max="10" step="any" name="v" value="{{form_values.v}}" required="required">  
+              data-balloon="To solve for the required air speed [m/s] for thermal comfort, a known air temperature to mean radiant temperature difference is required. This parameter is a fixed difference value, which causes the engine to solve for air speed instead of the mean radiant temperature." data-balloon-pos="down">
+              Minimum -10, maximum 10.  <i class="far fa-question-circle"></i> 
+            </button>
+          </span>
+        </label>
+        <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="-10" max="10" step="any" name="dep" value="{{form_values.dep}}" required="required"> 
 
-        <label for="name" class="f6 b db mb2">T<sub>air</sub> - T<sub>MRT</sub> [<span>&#176;</span>C] 
-          <span class="normal black-60">   
-            <button type=button 
-            class=" tl f6 ba b--none  pa0 dib black-60 bg-white" 
-            data-balloon-length="medium" 
-            data-balloon="To solve for the required air speed [m/s] for thermal comfort, a known air temperature to mean radiant temperature difference is required. This parameter is a fixed difference value, which causes the engine to solve for air speed instead of the mean radiant temperature." data-balloon-pos="down">
-            Minimum -10, maximum 10.  <i class="far fa-question-circle"></i> 
-          </button>
-        </span>
-      </label>
-      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="-10" max="10" step="any" name="dep" value="{{form_values.dep}}" required="required"> 
+        </div>
 
+        <div class="reveal-airspeed">
+
+          <label for="name" class="pt2 f6 b db mb2">Air Speed [m/s] 
+            <span class="normal black-60">
+              <button 
+                type=button 
+                class="tl f6 ba b--none pa0 dib black-60 bg-white" 
+                data-balloon-length="medium" 
+                data-balloon="Note: for values < 0.2 m/s this algorithm uses a natural convection solver." 
+                data-balloon-pos="down"> 
+                Minimum 0, maximum 10. <i class="far fa-question-circle"></i> 
+            </button>
+          </span>
+        </label>
+        <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="0" max="10" step="any" name="v" value="{{form_values.v}}" required="required">  
+
+          </div>
+      </div>
       <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6" type="submit" value="Submit">
     </form>
 

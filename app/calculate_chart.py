@@ -17,7 +17,7 @@ import base64
 #plt.rc('text', usetex=True)
 plt.rc('font', family='sanserif')
 
-def plot_psychro(
+def plot_psychro(algorithm,
 				#air temperature range over which calculations are performed [oC]
 				temp_air_init = np.arange(10, 35, .5), 
 
@@ -178,21 +178,27 @@ def plot_psychro(
 	plt.plot(temperature, saturation*.1, 'k-', linewidth = 1,alpha = alph)
 
 	#select desired plot using input-based logic 
-	if dep != 0:
-
+	# if solve for air speed
+	if algorithm == "solve_for_air_speed":
+		print("solving for air speed")
 		levels_contour = np.linspace(0.1, 2, 150)
 		CS3=plt.contourf(Y, psy_sat, v_forced_v, cmap = 'jet', levels=levels_contour, alpha = 0.6)
 		cbar = plt.colorbar(CS3, orientation='vertical', format="%.1f")
 		plt.text(38.5,-1.75,"m/s", size=textsize)
 	
+	#solve for mrt with free convection 
 	elif v < 0.2:
+		print("solving for mrt with free convection")
 		levels_contour = np.linspace(np.amin(T_MRT_psy), np.amax(T_MRT_psy), 15)
 		CS3=plt.contourf(Y, psy_sat, T_MRT_psy, cmap = 'jet', levels=levels_contour, alpha = 0.6)
 		CS = plt.contour(Y, psy_sat, T_MRT_psy, 13, colors='k', alpha = 1)
 		plt.clabel(CS, inline=3, fmt='%1.1f', fontsize=textsize)
 		cbar = plt.colorbar(CS3, orientation='vertical', format="%.1f")
 		plt.text(38.5,-1.75,"MRT $^\circ$C", size=textsize)
+
+	#solve for mrt with forced convection
 	else:
+		print("solving for mrt with forced convection")
 		#Forced Convection Plots. 
 		levels_contour = np.linspace(np.amin(T_MRT_forced_psy), np.amax(T_MRT_forced_psy), 15)
 		CS3=plt.contourf(Y, psy_sat, T_MRT_forced_psy, cmap = 'jet', levels=levels_contour, alpha = 0.6)
