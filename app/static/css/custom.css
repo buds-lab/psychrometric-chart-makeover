@@ -28,3 +28,11 @@
 #airspeed:checked ~ .reveal-mrt {
   display: block;
 }
+
+.bigger-font::after {
+  font-size: 20px !important;
+}
+
+.example-chart::after {
+  content: " Your goal is to match the colorbar condition to the plot. First look at the temperature and relative humidity value of the space you are designing for. Now, to make that condition comfortable, you will have to provide the corresponding air speed or mean radiant temperature indicated in the colorbar." url(img/chaosLogo.png) !important;
+}
