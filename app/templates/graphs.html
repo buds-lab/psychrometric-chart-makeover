@@ -43,7 +43,8 @@
 
   <!-- Header-->
     <div class="bg-black-90 w-100 ph3 pv3 pv4-ns ph4-m ph7-l">
-      <h1 class="f2 f1-l fw2 white-90 mb0 lh-title ph4-l">Psychrometric Chart</h1>
+      <h1 class="f3 f1-l fw2 white-90 mb0 lh-title ph4-l">Thinking outside the Comfort Box</h1>
+      <p class="f5 f3-l fw2 white-90 mb0 lh-title ph4-l">Because the whole gradient is comfortable now.</p>
     </div>
 
 
@@ -60,13 +61,22 @@
           <span class="normal black-60">Minimum 0.06 (dry) to maximum 0.8 (sweaty).</span></label>
         <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="0.06" max="0.8" step="any" name="w" value="{{form_values.w}}" required="required">
 
+
+      <label for="name" class="f6 b db mb2">Emissivity of Skin <span class="normal black-60">Default value 0.98. Minimum 0.90, maximum 1. 
+      </span></label>    
+      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="0.9" max="1" step="any" name="E" value="{{form_values.E}}" required="required">
+
+
+        
+<!-- @PJ can we put an always visible blurb here: -->
+The following two inputs change the algorithms used. Specifying a value for T<sub>air</sub> - T<sub>MRT</sub> that <span>&#8800;</span> 0 fixes the mean radiant temperature, causing the solver to solve for a required air speed for thermal comfort in [m/s]. Leaving T<sub>air</sub> - T<sub>MRT</sub> at 0 but specifying an air speed above 0.2 m/s will still solve for a required mean radiant temperature, but instead will use forced convection instead of natural convection algorithms.  
         <label for="name" class="f6 b db mb2">Air Speed [m/s] 
           <span class="normal black-60">
             <button 
               type=button 
               class="tl f6 ba b--none pa0 dib black-60 bg-white" 
               data-balloon-length="medium" 
-              data-balloon="Note: for values < 0.2 m/s this algorithm uses a natural convection solver. @eric, is this correct?" 
+              data-balloon="Note: for values < 0.2 m/s this algorithm uses a natural convection solver." 
               data-balloon-pos="down"> 
               Minimum 0, maximum 10. <i class="far fa-question-circle"></i> 
           </button>
@@ -79,19 +89,14 @@
             <button type=button 
             class=" tl f6 ba b--none  pa0 dib black-60 bg-white" 
             data-balloon-length="medium" 
-            data-balloon="@eric time to explain below what this convoluted input means" data-balloon-pos="down">
-            Minimum -10, maximum 10. Note: for values <span>&#8800;</span> 0 solve for wind speed and ignore 'Air Speed' input. <i class="far fa-question-circle"></i> 
+            data-balloon="To solve for the required air speed [m/s] for thermal comfort, a known air temperature to mean radiant temperature difference is required. This parameter is a fixed difference value, which causes the engine to solve for air speed instead of the mean radiant temperature." data-balloon-pos="down">
+            Minimum -10, maximum 10.  <i class="far fa-question-circle"></i> 
           </button>
         </span>
       </label>
       <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="-10" max="10" step="any" name="dep" value="{{form_values.dep}}" required="required"> 
 
-      <label for="name" class="f6 b db mb2">Emissivity of Skin <span class="normal black-60">Default value 0.98. Minimum 0.90, maximum 1. 
-      </span></label>    
-      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" min="0.9" max="1" step="any" name="E" value="{{form_values.E}}" required="required">
-
       <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6" type="submit" value="Submit">
-
     </form>
 
  <!-- Form Info Text -->
@@ -99,7 +104,7 @@
       <button 
         class="f6 ba b--none ph3 pv2 mb2 dib gray bg-white" 
         data-balloon-length="large" 
-        data-balloon="Wow What a colourful graph? This may surpass your window dimensions. Imagine you're on that boring class with that boring teacher and you didn't slept so well last night. Suddenly you're sleeping in class. Can you believe it?! I'm sure you can, this is just filler text till @eric modifies it and explains what is going on below. I just wrote a lot to simulate what it might be like to have a lot of text popping up all of a sudden. Wow" 
+        data-balloon="These charts eliminate a rigid comfort zone box, because now the whole chart is comfortable so long as the colorbar condition is met, treating the entire area covered by the gradient as a potentially comfortable region. So long as the required temperature or air speed condition shown by the color gradient is met by the system, the energy balance is favorable for comfort." 
         data-balloon-pos="up">
         How to intepret this graph <i class="far fa-question-circle"></i> 
       </button>
@@ -130,7 +135,7 @@
 
       <div class="f5 pb2 f4-l fw3"> <a href="https://www.sciencedirect.com/science/article/pii/S1876610217333672" target = "_blank" class="black-70 link dim"> References</a> </div>
       <span class="f7 f6-l db black-70 pb1">Eric Teitelbauma, Prageeth Jayathissa, Clayton Miller, Forrest Meggers</span>
-      <span class="f7 f6-l db black-70 pb1">Design with Comfort:  Enhancing the psychrometricchart with radiation and convection dimensions</span>
+      <span class="f7 f6-l db black-70 pb1">Design with Comfort:  Enhancing the psychrometric chart with radiation and convection dimensions</span>
       <span class="f7 f6-l db black-70">In Review</span>
       <span class="f7 f6-l db black-70"></span>
 
