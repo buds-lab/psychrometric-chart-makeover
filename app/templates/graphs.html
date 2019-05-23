@@ -24,8 +24,9 @@
   	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
   	<link rel="stylesheet" href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/custom.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/balloon-css/0.5.0/balloon.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/custom.css') }}">
 
 
 
@@ -42,9 +43,14 @@
   <body class="sans-serif ">
 
   <!-- Header-->
-    <div class="bg-black-90 w-100 ph3 pv3 pv4-ns ph4-m ph7-l">
+    <div class="bg-near-black w-100 ph3 pv3 pv4-ns ph4-m ph7-l">
       <h1 class="f3 f1-l fw2 white-90 mb0 lh-title ph4-l">Thinking outside the Comfort Box</h1>
-      <p class="f5 f3-l fw2 white-90 mb0 lh-title ph4-l">Because the whole gradient is comfortable now.</p>
+                    <button type=button 
+              class=" bg-near-black b--none f5 f3-l fw2 white-90 mb0 lh-title ph4-l bigger-font" 
+              data-balloon-length="fit" 
+              data-balloon=" There is more to comfort than just temperature and humidity. The radiative energy that we feel off the walls, the air speed, our metabolic rate, skin wettendess, and our skin emmisivity all have an effect. " data-balloon-pos="down">
+              Because the whole gradient is comfortable now. How?
+            </button>
     </div>
 
 
@@ -95,7 +101,7 @@
               <button type=button 
               class=" tl f6 ba b--none  pa0 dib black-60 bg-white" 
               data-balloon-length="medium" 
-              data-balloon="To solve for the required air speed [m/s] for thermal comfort, a known air temperature to mean radiant temperature difference is required. This parameter is a fixed difference value, which causes the engine to solve for air speed instead of the mean radiant temperature." data-balloon-pos="down">
+              data-balloon="This is a fixed value of the difference between the air temperature and mean radiant temperature. Values >0 indicate that the air temperature is greater than mean radiant temperature. Values < 0 indicate that the air temperature is less " data-balloon-pos="down">
               Minimum -10, maximum 10.  <i class="far fa-question-circle"></i> 
             </button>
           </span>
@@ -128,10 +134,10 @@
  <!-- Form Info Text -->
     <div class="center tc">
       <button 
-        class="f6 ba b--none ph3 pv2 mb2 dib gray bg-white" 
+        class="f6 ba b--none ph3 pv2 mb2 dib gray bg-white example-chart" 
         data-balloon-length="large" 
-        data-balloon="These charts eliminate a rigid comfort zone box, because now the whole chart is comfortable so long as the colorbar condition is met, treating the entire area covered by the gradient as a potentially comfortable region. So long as the required temperature or air speed condition shown by the color gradient is met by the system, the energy balance is favorable for comfort." 
-        data-balloon-pos="up">
+        data-balloon="" 
+        data-balloon-pos="down">
         How to intepret this graph <i class="far fa-question-circle"></i> 
       </button>
     </div>
@@ -160,7 +166,7 @@
 
 
       <div class="f5 pb2 f4-l fw3"> <a href="https://www.sciencedirect.com/science/article/pii/S1876610217333672" target = "_blank" class="black-70 link dim"> References</a> </div>
-      <span class="f7 f6-l db black-70 pb1">Eric Teitelbauma, Prageeth Jayathissa, Clayton Miller, Forrest Meggers</span>
+      <span class="f7 f6-l db black-70 pb1">Eric Teitelbaum, Prageeth Jayathissa, Clayton Miller, Forrest Meggers</span>
       <span class="f7 f6-l db black-70 pb1">Design with Comfort:  Enhancing the psychrometric chart with radiation and convection dimensions</span>
       <span class="f7 f6-l db black-70">In Review</span>
       <span class="f7 f6-l db black-70"></span>
