@@ -48,7 +48,7 @@
                     <button type=button 
               class=" bg-near-black b--none f5 f3-l fw2 white-90 mb0 lh-title ph4-l bigger-font" 
               data-balloon-length="fit" 
-              data-balloon=" There is more to comfort than just temperature and humidity. The radiative energy that we feel off the walls, the air speed, our metabolic rate, skin wettendess, and our skin emmisivity all have an effect. " data-balloon-pos="down">
+              data-balloon=" There is more to comfort than just temperature and humidity. The radiative energy that we feel off the walls, the air speed, our metabolic rate, skin wettendess, and our skin emmisivity all have an effect. In the chart below, your goal is to match the colourbar condition to the plot." data-balloon-pos="down">
               Because the whole gradient is comfortable now. How?
             </button>
     </div>
@@ -135,9 +135,9 @@
     <div class="center tc">
       <button 
         class="f6 ba b--none ph3 pv2 mb2 dib gray bg-white example-chart" 
-        data-balloon-length="large" 
+        data-balloon-length="xlarge" 
         data-balloon="" 
-        data-balloon-pos="down">
+        data-balloon-pos="up">
         How to intepret this graph <i class="far fa-question-circle"></i> 
       </button>
     </div>
@@ -145,6 +145,9 @@
  <!-- Graph -->
     <img src='{{graph1}}' alt="my plot"></img>
 
+<!-- would be cool to get this hide and reveal to work but its not working yet
+ --><!--     <img class="reveal-example-chart" src="{{ url_for('static', filename='img/chart_example.png') }}" alt="my plot"></img>
+ -->
 
  <!-- Some auto scrolling script -->
     <div>
