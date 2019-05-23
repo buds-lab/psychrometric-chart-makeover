@@ -27,7 +27,7 @@ application = Flask(__name__)
 def graphs():
 	matplotlib.use('agg') #Matplotlib needs to be in this format for web compatibility
 	form_values ={"MR": 1.2, "w": 0.06, "v": 0.1, "dep": 0, "E": 0.98}
-	graph1_url, T_MRT_forced_psy = plot_psychro();
+	graph1_url, T_MRT_forced_psy = plot_psychro(algorithm="solve_for_mrt");
 	#graph1_url, x1 = build_graph()
 	return render_template('graphs.html', graph1=graph1_url, form_values = form_values, new_values=False, mrt_checked=True)
 
