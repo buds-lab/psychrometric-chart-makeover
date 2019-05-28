@@ -12,6 +12,7 @@ An expansion to the classic pschrometric chart, including the effects of radiati
 
 * The `jupyter_notebook`  folder contains a .ipynb file in which you can play with the source code, and see how the app works
 * The `app` folder contains the python source code in its plain format, fully bundled as a responsive flask web app
+	* within the `app` folder, the `calculate_chart.py` contains the algorithm, while `application.py` serves the algorithm on the website via `templates/graphs.html`
 
 
 ## Reference
