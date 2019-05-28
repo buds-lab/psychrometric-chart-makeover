@@ -1,8 +1,22 @@
 # Design with Comfort:  Enhancing the psychrometric chart with radiation and convection dimensions
 
-A paper submitted by Eric Teitelbaum, Prageeth Jayathissa, Clayton Miller and Forrest Meggers to the journal [Energy and Buildings](https://www.journals.elsevier.com/energy-and-buildings)
+## See Live Demo 
 
-## Abstract
+http://comfortch.art/
+
+## What is this chart?
+
+An expansion to the classic pschrometric chart, including the effects of radiation heat exchange on human comfort. 
+
+## About the Repo
+
+* The `jupyter_notebook`  folder contains a .ipynb file in which you can play with the source code, and see how the app works
+* The `app` folder contains the python source code in its plain format, fully bundled as a responsive flask web app
+
+
+## Reference
+
+A paper submitted by Eric Teitelbaum, Prageeth Jayathissa, Clayton Miller and Forrest Meggers to the journal [Energy and Buildings](https://www.journals.elsevier.com/energy-and-buildings)
 
 This paper presents a makeover of the psychrometric chart using a new color-shading  method  that  allows  the  whole  chart  to  be  considered  comfortable based on the variation of non-air temperature comfort parameters such as mean radiant temperature,  air movement, and the transitional behavior of occupants. These representations allow for thinking outside the thermal comfort box with the use of innovative system types and comfort feedback for occupants. The new chart representations are then applied on several real-world scenario datasets to illustrate the value in practice. An open-source repository is available for other researchers to reproduce the charts and color-shading for their own projects using Python and the matplotlib visualization library. The chart is also served at [comfortch.art](http://www.comfortch.art).
 
