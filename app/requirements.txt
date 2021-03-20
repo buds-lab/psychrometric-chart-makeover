@@ -18,7 +18,7 @@ Flask==1.0.3
 future==0.16.0
 idna==2.7
 itsdangerous==1.1.0
-Jinja2==2.10.1
+Jinja2==2.11.3
 jmespath==0.9.4
 jsonschema==2.6.0
 kiwisolver==1.1.0
